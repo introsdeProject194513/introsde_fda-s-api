@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:secure-property-placeholder="http://www.mulesoft.org/schema/mule/secure-property-placeholder" xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/secure-property-placeholder http://www.mulesoft.org/schema/mule/secure-property-placeholder/current/mule-secure-property-placeholder.xsd">
+    <context:property-placeholder location="fda-s-api-v1.dev.properties,fda-s-api-v1.common.properties"/>
+   	<sub-flow name="global.get-tracking-id">
+		<set-session-variable variableName="trackingId" value="#[(message.inboundProperties['${correlation.id.name}'] != null) ? message.inboundProperties['${correlation.id.name}'] : message.id]" doc:name="trackingId"/>
+	</sub-flow>
+    <sub-flow name="transform-to-jsonapi-data_flow">
+        <set-variable variableName="runtimeVersion" value="#[org.mule.config.MuleManifest.getProductVersion()]" doc:name="Runtime Version"/>
+        <dw:transform-message doc:name="Create Data Response">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json encoding="UTF-8", skipNullOn="everywhere"
+---
+// This response confirms to the JSONAPI specification 
+// http://jsonapi.org/format
+{
+	data: [{
+		type: flowVars['response.title'],
+	 	id: flowVars.transactionId,
+		attributes:
+		{
+			dateTime: now as :string { format: "yyyy-MM-dd'T'HH:mm:ssZ" },
+			runtimeVersion: flowVars.runtimeVersion,
+			policies : flowVars.policies
+		}
+	}]
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </sub-flow>
+</mule>

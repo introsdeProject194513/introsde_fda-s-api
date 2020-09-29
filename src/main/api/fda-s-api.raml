@@ -1,0 +1,39 @@
+#%RAML 1.0
+version: v1
+title: FDA S-API
+mediaType: application/json
+protocols: [ HTTP, HTTPS ]
+baseUri: http://localhost:9002/api/fda-s-api/{version}/
+uses:
+  dt: libraries/data_types_library.raml
+  tr: libraries/traits_library.raml
+
+/drugs:
+  is: [tr.common_error_traits]
+  displayName: Drugs
+  description: |
+    Drugs that can be prescribed by the General Practitioner
+  get:
+    description: |
+      Query the FDA for particular drugs
+    queryParameters:
+      filter[substanceName]:
+        type: string
+        required: false
+        example: 'ISOTRETINOIN'
+        description: |
+          Substance name
+      filter[brandName]:
+        type: string
+        required: false
+        example: 'ZENATANE'
+        description: |
+          Brand name
+    responses:
+      200:
+        description: ok
+        body:
+          application/json:
+            type: array
+            items: dt.get_drugs
+            example: !include example/get_drugs.json

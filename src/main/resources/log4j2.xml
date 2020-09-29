@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+	<Appenders>
+		<RollingFile name="file"
+			fileName="${sys:mule.logs}${sys:file.separator}fda-s-api-v1.log"
+			filePattern="${sys:mule.logs}${sys:file.separator}$${date:yyyy-MM}${sys:file.separator}fda-s-api-v1-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%d [%t] %-5p (%F:%L) - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="50 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10">
+				<Delete basePath="${sys:mule.logs}" maxDepth="2">
+					<IfFileName glob="/fda-s-api-v1*.log.gz" />
+					<IfLastModified age="60d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+
+		<AsyncLogger name="org.mule.module.http.internal.HttpMessageLogger"
+			level="DEBUG" />
+		<AsyncLogger name="com.mulesoft.weave.mule.utils" level="WARN" />
+
+		<AsyncLogger name="org.mule.api.processor.LoggerMessageProcessor"
+			level="INFO" />
+		<AsyncLogger name="AUDIT" level="INFO" />
+
+		<!-- CXF is used heavily by Mule for web services -->
+		<AsyncLogger name="org.apache.cxf" level="WARN" />
+
+		<!-- Apache Commons tend to make a lot of noise which can clutter the log -->
+		<AsyncLogger name="org.apache" level="WARN" />
+
+		<!-- Reduce startup noise -->
+		<AsyncLogger name="org.springframework.beans.factory"
+			level="WARN" />
+
+		<!-- Mule classes -->
+		<AsyncLogger name="org.mule" level="INFO" />
+		<AsyncLogger name="com.mulesoft" level="INFO" />
+
+		<!-- Reduce DM verbosity -->
+		<AsyncLogger name="org.jetel" level="WARN" />
+		<AsyncLogger name="Tracking" level="WARN" />
+
+		<AsyncRoot level="INFO">
+			<AppenderRef ref="file" />
+		</AsyncRoot>
+	</Loggers>
+</Configuration>

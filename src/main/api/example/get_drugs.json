@@ -1,0 +1,24 @@
+[{
+  "id": "1f5dd8c1-0f6f-823d-d0ee-1b97337x4cc6",
+  "setId": "1f5dd8c1-0f6f-823d-d0ee-1b97337x4cc6",
+  "substanceName": "SUBSTANCE NAME",
+  "brandName": "BRAND NAME",
+  "dosageForm": "CAPSULE",
+  "productType": "PRESCRIPTION DRUG",
+  "effectiveTime": "2019-09-09",
+  "applicationNumber": "ANDA202099",
+  "manufacterName": "MANUFACTER NAME",
+  "warningLabels": {
+    "drugInteractions": "Drug Interactions Vitamin A: Because ...",
+    "precautions": "Must only be prescribed by prescribers who are registered and activated with the iPLEDGE Program",
+    "geriatricUse": "Geriatric Use Clinical studies of isotretinoin did not include sufficient numbers of subjects aged 65 years and over to determine whether they respond differently from younger subjects",
+    "description": "Must only be prescribed by prescribers who are registered and activated with the iPLEDGE Program",
+    "generalPrecautions": "Must only be prescribed by prescribers who are registered and activated with the iPLEDGE Program",
+    "indicationAndUsage": "Indicated for the treatment of severe recalcitrant nodular acne.",
+    "dosageAndAdministrationTable": "Indicated for the treatment of severe recalcitrant nodular acne.",
+    "pediatricUse": "Indicated for the treatment of severe recalcitrant nodular acne.",
+    "contraindications": "Indicated for the treatment of severe recalcitrant nodular acne.",
+    "pregnancy": "Indicated for the treatment of severe recalcitrant nodular acne.",
+    "warnings": "Indicated for the treatment of severe recalcitrant nodular acne."
+  }
+}]

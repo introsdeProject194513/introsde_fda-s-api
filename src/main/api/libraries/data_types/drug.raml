@@ -1,0 +1,131 @@
+#%RAML 1.0 DataType
+
+displayName: PostPatient
+description: Create a new patient record within the EHR of her/his GP
+
+type: object
+properties:
+  id:
+    type: string
+    required: true
+    example: "1f5dd8c1-0f6f-823d-d0ee-1b97337x4cc6"
+    description: |
+      Unique identifier for the drug
+  setId:
+    type: string
+    required: true
+    example: "1f5dd8c1-0f6f-823d-d0ee-1b97337x4cc6"
+    description: |
+      Unique identifier for the set
+  substanceName:
+    type: string
+    required: true
+    example: SUBSTANCE NAME
+    description: |
+      Substance name
+  brandName:
+    type: string
+    required: false
+    example: BRAND NAME
+    description: |
+      Brand name
+  dosageForm:
+    type: string
+    required: false
+    example: CAPSULE
+    description: |
+      Dosage form
+  productType:
+    type: string
+    required: false
+    example: PRESCRIPTION DRUG
+    description: |
+      Product type
+  effectiveTime:
+    type: date-only
+    required: false
+    example: 2019-09-09
+    description: |
+      Effective time
+  applicationNumber:
+    type: string
+    required: false
+    example: ANDA202099
+    description: |
+      Application number
+  manufacterName:
+    type: string
+    required: false
+    example: MANUFACTER NAME
+    description: |
+      Manufacter name
+  warningLabels:
+    type: object
+    required: false
+    properties:
+      drugInteractions:
+        type: string
+        required: false
+        example: "Drug Interactions Vitamin A: Because ..."
+        description: |
+          Drug interaction
+      precautions:
+        type: string
+        required: false
+        example: "Must only be prescribed by prescribers who are registered and activated with the iPLEDGE Program"
+        description: |
+          Precautions
+      geriatricUse:
+        type: string
+        required: false
+        example: "Geriatric Use Clinical studies of isotretinoin did not include sufficient numbers of subjects aged 65 years and over to determine whether they respond differently from younger subjects"
+        description: |
+          Warning for usage for the elderly
+      description:
+        type: string
+        required: false
+        example: "Must only be prescribed by prescribers who are registered and activated with the iPLEDGE Program"
+        description: |
+          Description of the drug
+      generalPrecautions:
+        type: string
+        required: false
+        example: "Must only be prescribed by prescribers who are registered and activated with the iPLEDGE Program"
+        description: |
+          General precautions
+      indicationAndUsage:
+        type: string
+        required: false
+        example: "Indicated for the treatment of severe recalcitrant nodular acne."
+        description: |
+          Indication and usage
+      dosageAndAdministrationTable:
+        type: string
+        required: false
+        example: "Indicated for the treatment of severe recalcitrant nodular acne."
+        description: |
+          Dosage
+      pediatricUse:
+        type: string
+        required: false
+        example: "Indicated for the treatment of severe recalcitrant nodular acne."
+        description: |
+          Indication for pediatric use
+      contraindications:
+        type: string
+        required: false
+        example: "Indicated for the treatment of severe recalcitrant nodular acne."
+        description: |
+          Contraindications
+      pregnancy:
+        type: string
+        required: false
+        example: "Indicated for the treatment of severe recalcitrant nodular acne."
+        description: |
+          Indication for pregnant woman
+      warnings:
+        type: string
+        required: false
+        example: "Indicated for the treatment of severe recalcitrant nodular acne."
+        description: |
+          Warnings
