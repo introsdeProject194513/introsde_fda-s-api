@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns:spring="http://www.springframework.org/schema/beans"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
@@ -9,17 +19,27 @@ http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/sche
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
-    <!-- HTTP Listener Connector -->
-    <http:listener-config name="api-httpListenerConfig" host="${api.http.listener.host}" port="${api.http.listener.port}" doc:name="HTTP Listener Configuration" />
-    <!-- APIkit Router Configuration -->
-    <apikit:config name="api-config" raml="fda-s-api.raml" consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false" />
-    <http:request-config name="HTTP_FDA_Request_Configuration" protocol="HTTPS" host="api.fda.gov" port="443" basePath="drug" doc:name="HTTP Request Configuration" />
-    <!-- API Autodiscovery Configuration -->
-    <!--     <api-platform-gw:api apiName="${api.autodiscovery.name}" version="${api.autodiscovery.version}" flowRef="api-main" create="false" apikitRef="api-config" doc:name="API Autodiscovery" /> -->
-    <flow name="api-main">
-        <http:listener config-ref="api-httpListenerConfig" path="${api.http.listener.path}" doc:name="HTTP" />
-        <flow-ref name="global.get-tracking-id" doc:name="get-tracking-id" />
-        <logger message="#[[sessionVars.trackingId]] - #[string:[#[context:serviceName]]] - { &quot;trackingId&quot;: &quot;#[sessionVars.trackingId]&quot;, &quot;request&quot;: &quot;#[message.inboundProperties['http.method']] #[message.inboundProperties['http.request.uri']]&quot; }" level="INFO" doc:name="Audit request" category="AUDIT" />
+	<!-- HTTP Listener Connector -->
+	<http:listener-config name="api-httpListenerConfig"
+		host="${api.http.listener.host}" port="${api.http.listener.port}"
+		doc:name="HTTP Listener Configuration" />
+	<!-- APIkit Router Configuration -->
+	<apikit:config name="api-config" raml="fda-s-api.raml"
+		consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false" />
+	<http:request-config name="HTTP_FDA_Request_Configuration"
+		protocol="HTTPS" host="api.fda.gov" port="443" basePath="drug"
+		doc:name="HTTP Request Configuration" />
+	<!-- API Autodiscovery Configuration -->
+	<!-- <api-platform-gw:api apiName="${api.autodiscovery.name}" version="${api.autodiscovery.version}" 
+		flowRef="api-main" create="false" apikitRef="api-config" doc:name="API Autodiscovery" 
+		/> -->
+	<flow name="api-main">
+		<http:listener config-ref="api-httpListenerConfig" path="${api.http.listener.path}"
+			doc:name="HTTP" />
+		<flow-ref name="global.get-tracking-id" doc:name="get-tracking-id" />
+		<logger
+			message="#[[sessionVars.trackingId]] - #[string:[#[context:serviceName]]] - { &quot;trackingId&quot;: &quot;#[sessionVars.trackingId]&quot;, &quot;request&quot;: &quot;#[message.inboundProperties['http.method']] #[message.inboundProperties['http.request.uri']]&quot; }"
+			level="INFO" doc:name="Audit request" category="AUDIT" />
         <response>
             <choice doc:name="Choice">
                 <when expression="#[flowVars.errorRaised != null &amp;&amp; flowVars.errorRaised == true]">
@@ -30,29 +50,65 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
                 </otherwise>
             </choice>
         </response>
-        <apikit:router config-ref="api-config" doc:name="APIkit Router" />
-        <exception-strategy ref="global-exception-strategy" doc:name="Reference Exception Strategy" />
-    </flow>
-    <flow name="health-check">
-        <http:listener config-ref="api-httpListenerConfig" path="/health-check" doc:name="HTTP" />
-        <set-property propertyName="http.status" value="200" doc:name="Set 200 Status Code" />
-        <set-variable variableName="response.title" value="Heartbeat" doc:name="Set Response Title" />
-        <set-payload value="OK" doc:name="Set Status Code" mimeType="application/java" />
-        <flow-ref name="transform-to-jsonapi-data_flow" doc:name="transform-to-jsonapi-data_flow" />
-    </flow>
-    <flow name="get:/drugs:api-config">
+		<apikit:router config-ref="api-config" doc:name="APIkit Router" />
+		<exception-strategy ref="global-exception-strategy"
+			doc:name="Reference Exception Strategy" />
+	</flow>
+	<flow name="health-check">
+		<http:listener config-ref="api-httpListenerConfig" path="/health-check"
+			doc:name="HTTP" />
+		<set-property propertyName="http.status" value="200"
+			doc:name="Set 200 Status Code" />
+		<set-variable variableName="response.title" value="Heartbeat"
+			doc:name="Set Response Title" />
+		<set-payload value="OK" doc:name="Set Status Code"
+			mimeType="application/java" />
+		<flow-ref name="transform-to-jsonapi-data_flow" doc:name="transform-to-jsonapi-data_flow" />
+	</flow>
+	<flow name="get:/drugs:api-config">
 		<logger
 			message="[#[sessionVars.trackingId]] - [#[string:#[context:serviceName]]] - START search drugs"
 			level="INFO" doc:name="Start" />
-        <http:request config-ref="HTTP_FDA_Request_Configuration" path="label.json" method="GET" doc:name="GET openFDA data">
-            <http:request-builder>
-                <http:query-param paramName="search" value="openfda.generic_name:%22ISOTRETINOIN%22"/>
-                <http:query-param paramName="limit" value="100"/>
-            </http:request-builder>
-        </http:request>
-        <dw:transform-message doc:name="Response" metadata:id="9e72f1b2-2213-4f30-9656-8e5b010ff639">
-            <dw:input-payload mimeType="application/json"/>
-            <dw:set-payload><![CDATA[%dw 1.0
+		<set-variable variableName="genericName"
+			value="#[message.inboundProperties['http.query.params'].'filter[genericName]']"
+			doc:name="genericName" />
+		<set-variable variableName="substanceName"
+			value="#[message.inboundProperties['http.query.params'].'filter[substanceName]']"
+			doc:name="substanceName" />
+		<set-variable variableName="brandName"
+			value="#[message.inboundProperties['http.query.params'].'filter[brandName]']"
+			doc:name="brandName" />			
+		<set-variable variableName="limit"
+			value="#[message.inboundProperties['http.query.params'].'filter[limit]']"
+			doc:name="limit" />
+		<dw:transform-message doc:name="Generate search string">
+			<dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+
+%function generateSearchString(field,value,exists)
+'' when exists == false otherwise ((field ++ ':%22' ++ value ++ '%22') ++ '+AND+')
+
+%function generateString()
+(
+    generateSearchString('openfda.generic_name', flowVars.genericName, flowVars.genericName? and flowVars.genericName != '')
+    ++ generateSearchString('openfda.substance_name', flowVars.substanceName, flowVars.substanceName? and flowVars.substanceName != '')
+    ++ generateSearchString('openfda.brand_name', flowVars.brandName, flowVars.brandName? and flowVars.brandName != '')
+)[0..-6]
+
+%var searchString =  generateString()
+---
+searchString]]></dw:set-payload>
+		</dw:transform-message>
+		<http:request config-ref="HTTP_FDA_Request_Configuration"
+			path="label.json?search=#[payload]" method="GET" doc:name="GET openFDA data">
+			<http:request-builder>
+                <http:query-param paramName="limit" value="#[flowVars.limit]"/>
+			</http:request-builder>
+		</http:request>
+		<dw:transform-message doc:name="Response"
+			metadata:id="9e72f1b2-2213-4f30-9656-8e5b010ff639">
+			<dw:input-payload mimeType="application/json" />
+			<dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 payload.results map ((result , indexOfResult) -> {
@@ -79,9 +135,9 @@ payload.results map ((result , indexOfResult) -> {
 		warnings: result.warnings[0] default ""
 	}
 })]]></dw:set-payload>
-        </dw:transform-message>
+		</dw:transform-message>
 		<logger
 			message="[#[sessionVars.trackingId]] - [#[string:#[context:serviceName]]] - END search drugs"
 			level="INFO" doc:name="End" />
-    </flow>
+	</flow>
 </mule>

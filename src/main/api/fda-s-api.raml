@@ -17,6 +17,12 @@ uses:
     description: |
       Query the FDA for particular drugs
     queryParameters:
+      filter[genericName]:
+        type: string
+        required: false
+        example: 'ISOTRETINOIN'
+        description: |
+          Generic name
       filter[substanceName]:
         type: string
         required: false
@@ -29,6 +35,13 @@ uses:
         example: 'ZENATANE'
         description: |
           Brand name
+      page[limit]:
+        type: integer
+        default: 10
+        example: 100
+        required: false
+        description: |
+          Number of records to be returned
     responses:
       200:
         description: ok
